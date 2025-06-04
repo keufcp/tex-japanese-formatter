@@ -58,6 +58,10 @@ node_modules/
 # VS Code test directory
 .vscode-test/
 
+# Coverage reports
+coverage/
+.nyc_output/
+
 # TypeScript cache
 *.tsbuildinfo
 
