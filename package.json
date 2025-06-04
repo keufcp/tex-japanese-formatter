@@ -4,6 +4,10 @@
   "description": "Format Japanese punctuation in LaTeX files on save",
   "version": "1.0.0",
   "publisher": "keufcp",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yourusername/tex-japanese-formatter.git"
+  },
   "engines": {
     "vscode": "^1.70.0"
   },
