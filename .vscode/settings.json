@@ -1,0 +1,19 @@
+{
+  "typescript.preferences.includePackageJsonAutoImports": "on",
+  "typescript.suggest.autoImports": true,
+  "typescript.preferences.noSemicolons": false,
+  "editor.insertSpaces": true,
+  "editor.tabSize": 2,
+  "files.exclude": {
+    "out": false,
+    "node_modules": true,
+    ".vscode-test": true
+  },
+  "search.exclude": {
+    "out": true,
+    "node_modules": true,
+    ".vscode-test": true
+  },
+  "typescript.tsc.autoDetect": "off",
+  "files.eol": "\n"
+}

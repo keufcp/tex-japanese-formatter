@@ -1,0 +1,94 @@
+{
+  "name": "tex-japanese-formatter",
+  "displayName": "LaTeX Japanese Punctuation Formatter",
+  "description": "Format Japanese punctuation in LaTeX files on save",
+  "version": "1.0.0",
+  "publisher": "keufcp",
+  "engines": {
+    "vscode": "^1.70.0"
+  },
+  "categories": [
+    "Formatters"
+  ],
+  "keywords": [
+    "latex",
+    "tex",
+    "japanese",
+    "formatter",
+    "punctuation"
+  ],
+  "activationEvents": [
+    "onLanguage:latex"
+  ],
+  "main": "./out/extension.js",
+  "contributes": {
+    "configuration": {
+      "title": "LaTeX Japanese Formatter",
+      "properties": {
+        "texJapaneseFormatter.enabled": {
+          "type": "boolean",
+          "default": true,
+          "description": "Enable the LaTeX Japanese punctuation formatter"
+        },
+        "texJapaneseFormatter.formatOnSave": {
+          "type": "boolean",
+          "default": true,
+          "description": "Format Japanese punctuation automatically when saving .tex files"
+        },
+        "texJapaneseFormatter.targetLanguages": {
+          "type": "array",
+          "default": [
+            "latex"
+          ],
+          "description": "File types to apply formatting to",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "commands": [
+      {
+        "command": "texJapaneseFormatter.format",
+        "title": "Format Japanese Punctuation",
+        "category": "LaTeX Japanese Formatter"
+      }
+    ]
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "pretest": "npm run compile && npm run lint",
+    "lint": "eslint src --ext ts",
+    "test": "npm run compile:test && node ./out/test/runTest.js",
+    "compile:test": "tsc test/runTest.ts test/suite/index.ts test/suite/textProcessor.test.ts test/suite/largeFile.test.ts --outDir out --module commonjs --target ES2020 --moduleResolution node --esModuleInterop --skipLibCheck",
+    "test-coverage": "nyc npm run test",
+    "test-watch": "npm run test -- --watch",
+    "package": "vsce package",
+    "publish": "vsce publish",
+    "release:patch": "npm version patch && git push --follow-tags",
+    "release:minor": "npm version minor && git push --follow-tags",
+    "release:major": "npm version major && git push --follow-tags"
+  },
+  "devDependencies": {
+    "@types/vscode": "^1.70.0",
+    "@types/mocha": "^10.0.0",
+    "@types/node": "16.x",
+    "@vscode/test-electron": "^2.3.0",
+    "mocha": "^10.2.0",
+    "typescript": "^4.9.0",
+    "eslint": "^8.0.0",
+    "@typescript-eslint/eslint-plugin": "^5.0.0",
+    "@typescript-eslint/parser": "^5.0.0",
+    "glob": "^8.0.0",
+    "nyc": "^15.1.0",
+    "c8": "^7.12.0"
+  },
+  "nyc": {
+    "extension": [".ts"],
+    "exclude": ["**/*.d.ts", "out/**/*", "test/**/*"],
+    "reporter": ["text", "html"],
+    "all": true
+  }
+}

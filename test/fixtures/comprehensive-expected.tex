@@ -1,0 +1,111 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage[japanese]{babel}
+\usepackage{amsmath}
+\usepackage{array}
+
+\title{包括的句読点テスト文書}
+\author{テスト太郎}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\section{基本的な句読点テスト}
+
+これは，基本的なテストです．また，これも，テストです．
+
+\section{数字との組み合わせ}
+
+2024年，日本では多くの研究が行われました．また，温度は25℃，湿度は60\%でした．
+値段は1,000円，重量は2.5kgです．
+
+\section{数式との組み合わせ}
+
+数式 $x = y + z$ において，$x$ は結果を表します．
+また，$E = mc^2$ という有名な式があります．
+
+複雑な数式の場合：
+\begin{equation}
+\int_{-\infty}^{\infty} e^{-x^2} dx = \sqrt{\pi}
+\end{equation}
+
+この積分の結果は，$\sqrt{\pi}$ となります．
+
+\section{英単語との組み合わせ}
+
+プログラミング言語Python，JavaScript，TypeScriptなどがあります．
+また，VS Code，GitHub，npmなどのツールも重要です．
+
+データベースはMySQL，PostgreSQL，MongoDBが使われます．
+APIはREST API，GraphQL APIなどがあります．
+
+\section{表との組み合わせ}
+
+以下の表は，プログラミング言語の特徴をまとめたものです．
+
+\begin{table}[h]
+\centering
+\begin{tabular}{|l|l|l|}
+\hline
+言語 & 型システム & 用途 \\
+\hline
+Python & 動的型付け & データサイエンス，AI \\
+TypeScript & 静的型付け & Webフロントエンド \\
+Rust & 静的型付け & システムプログラミング \\
+\hline
+\end{tabular}
+\caption{プログラミング言語の比較}
+\end{table}
+
+この表から，各言語の特徴が分かります．
+
+\section{特殊文字との組み合わせ}
+
+記号（），[]，{}などと組み合わせた場合のテストです．
+引用符"text"，'text'との組み合わせもテストします．
+
+URL https://example.com，メールアドレス test@example.com なども含みます．
+
+\section{長い文章での連続テスト}
+
+これは，非常に長い文章のテストです．句読点が多数含まれている場合，正しく変換されるかを確認します．たとえば，研究において，データの収集，分析，可視化，解釈という一連のプロセスがあります．また，機械学習では，前処理，特徴量エンジニアリング，モデル選択，評価という段階があります．さらに，深層学習では，ニューラルネットワークの設計，最適化，正則化，ハイパーパラメータチューニングが重要です．
+
+\section{コードブロックとの組み合わせ}
+
+以下は，Python のコード例です．
+
+\begin{verbatim}
+def process_data(data):
+    # データ処理，変換，出力
+    result = data.process()
+    return result
+\end{verbatim}
+
+コード内の句読点は変換されません．しかし，説明文では，適切に変換されます．
+
+\section{引用との組み合わせ}
+
+「これは，引用文です．」という形式や，
+『これも，引用文です．』という形式があります．
+
+\section{箇条書きとの組み合わせ}
+
+\begin{itemize}
+\item 項目1：これは，最初の項目です．
+\item 項目2：これは，2番目の項目です．
+\item 項目3：これは，最後の項目です．
+\end{itemize}
+
+\begin{enumerate}
+\item 手順1：まず，データを準備します．
+\item 手順2：次に，分析を実行します．
+\item 手順3：最後に，結果を解釈します．
+\end{enumerate}
+
+\section{結論}
+
+このテストファイルにより，さまざまなパターンでの句読点変換が正しく動作することを確認できます．数字，数式，英単語，表，特殊文字など，実際のLaTeX文書で使われる要素との組み合わせをテストしました．
+
+\end{document}
