@@ -6,7 +6,7 @@
   "publisher": "keufcp",
   "repository": {
     "type": "git",
-    "url": "https://github.com/yourusername/tex-japanese-formatter.git"
+    "url": "https://github.com/keufcp/tex-japanese-formatter.git"
   },
   "engines": {
     "vscode": "^1.70.0"
