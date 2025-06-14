@@ -1,11 +1,13 @@
 import * as vscode from "vscode";
 import { TexJapaneseFormatter } from "./formatter/texFormatter";
 import { SettingsManager } from "./config/settings";
+import { Logger } from "./utils/logger";
 
 let formatter: TexJapaneseFormatter;
 
 export function activate(context: vscode.ExtensionContext) {
-  console.log("LaTeX Japanese Formatter is now active!");
+  Logger.initialize();
+  Logger.info("LaTeX Japanese Formatter is now active!");
 
   try {
     formatter = new TexJapaneseFormatter();
@@ -23,9 +25,14 @@ export function activate(context: vscode.ExtensionContext) {
           }
         }
       } catch (error) {
-        console.error("Error during save formatting:", error);
+        const errorMessage =
+          error instanceof Error ? error.message : String(error);
+        Logger.error(
+          "Error during save formatting",
+          error instanceof Error ? error : new Error(String(error))
+        );
         vscode.window.showErrorMessage(
-          `LaTeX Japanese Formatter error: ${error}`
+          `LaTeX Japanese Formatter error: ${errorMessage}`
         );
       }
     });
@@ -35,7 +42,10 @@ export function activate(context: vscode.ExtensionContext) {
       try {
         formatter.updateConfiguration();
       } catch (error) {
-        console.error("Error updating configuration:", error);
+        Logger.error(
+          "Error updating configuration",
+          error instanceof Error ? error : new Error(String(error))
+        );
       }
     });
 
@@ -45,42 +55,111 @@ export function activate(context: vscode.ExtensionContext) {
       async () => {
         try {
           const editor = vscode.window.activeTextEditor;
-          if (editor && editor.document.languageId === "latex") {
-            const edits = formatter.formatDocument(editor.document);
+          if (!editor) {
+            vscode.window.showWarningMessage("No active text editor found.");
+            return;
+          }
+
+          if (editor.document.languageId !== "latex") {
+            vscode.window.showWarningMessage(
+              "Please open a LaTeX (.tex) file to use this formatter."
+            );
+            return;
+          }
+
+          const document = editor.document;
+          Logger.info(`Manual formatting requested for: ${document.fileName}`);
+
+          // 大容量ファイルの場合は進捗表示
+          if (document.lineCount > 1000) {
+            await vscode.window.withProgress(
+              {
+                location: vscode.ProgressLocation.Notification,
+                title: "Formatting LaTeX document...",
+                cancellable: false,
+              },
+              async (progress) => {
+                progress.report({
+                  increment: 0,
+                  message: "Processing large file...",
+                });
+
+                const edits = formatter.formatDocument(document);
+
+                if (edits.length > 0) {
+                  progress.report({
+                    increment: 50,
+                    message: "Applying changes...",
+                  });
+                  const edit = new vscode.WorkspaceEdit();
+                  edit.set(document.uri, edits);
+                  await vscode.workspace.applyEdit(edit);
+                  progress.report({ increment: 100, message: "Completed!" });
+
+                  vscode.window.showInformationMessage(
+                    `Japanese punctuation formatted! (${edits.length} changes applied)`
+                  );
+                } else {
+                  progress.report({
+                    increment: 100,
+                    message: "No changes needed",
+                  });
+                  vscode.window.showInformationMessage(
+                    "No Japanese punctuation found to format."
+                  );
+                }
+              }
+            );
+          } else {
+            // 小容量ファイルの場合は通常処理
+            const edits = formatter.formatDocument(document);
 
             if (edits.length > 0) {
               const edit = new vscode.WorkspaceEdit();
-              edit.set(editor.document.uri, edits);
+              edit.set(document.uri, edits);
               await vscode.workspace.applyEdit(edit);
               vscode.window.showInformationMessage(
-                "Japanese punctuation formatted!"
+                `Japanese punctuation formatted! (${edits.length} changes applied)`
               );
             } else {
               vscode.window.showInformationMessage(
                 "No Japanese punctuation found to format."
               );
             }
-          } else {
-            vscode.window.showWarningMessage(
-              "Please open a LaTeX (.tex) file to use this formatter."
-            );
           }
         } catch (error) {
-          console.error("Error during manual formatting:", error);
-          vscode.window.showErrorMessage(`Formatting failed: ${error}`);
+          const errorMessage =
+            error instanceof Error ? error.message : String(error);
+          Logger.error(
+            "Error during manual formatting",
+            error instanceof Error ? error : new Error(String(error))
+          );
+          vscode.window.showErrorMessage(`Formatting failed: ${errorMessage}`);
         }
       }
     );
 
     context.subscriptions.push(saveListener, configListener, formatCommand);
+
+    // Loggerのクリーンアップを登録
+    context.subscriptions.push({
+      dispose: () => Logger.dispose(),
+    });
+
+    Logger.info("LaTeX Japanese Formatter activation completed successfully");
   } catch (error) {
-    console.error("Error activating LaTeX Japanese Formatter:", error);
+    const errorMessage = error instanceof Error ? error.message : String(error);
+    Logger.error(
+      "Error activating LaTeX Japanese Formatter",
+      error instanceof Error ? error : new Error(String(error))
+    );
     vscode.window.showErrorMessage(
-      `Failed to activate LaTeX Japanese Formatter: ${error}`
+      `Failed to activate LaTeX Japanese Formatter: ${errorMessage}`
     );
   }
 }
 
 export function deactivate() {
-  console.log("LaTeX Japanese Formatter deactivated");
+  Logger.info("LaTeX Japanese Formatter deactivated");
+  Logger.dispose();
 }
