@@ -66,10 +66,7 @@
     "pretest": "npm run compile && npm run lint",
     "lint": "eslint src --ext ts",
     "test": "npm run compile:test && node ./out/test/runTest.js",
-    "test-unit": "npm run compile && npx mocha 'out/test/suite/*.test.js' --ui tdd --timeout 10000",
     "compile:test": "tsc test/runTest.ts test/suite/index.ts test/suite/textProcessor.test.ts test/suite/largeFile.test.ts --outDir out --module commonjs --target ES2020 --moduleResolution node --esModuleInterop --skipLibCheck",
-    "test-coverage": "nyc npm run test-unit",
-    "test-watch": "npm run test -- --watch",
     "package": "vsce package",
     "publish": "vsce publish",
     "release:patch": "npm version patch && git push --follow-tags",
@@ -86,22 +83,6 @@
     "eslint": "^8.0.0",
     "@typescript-eslint/eslint-plugin": "^5.0.0",
     "@typescript-eslint/parser": "^5.0.0",
-    "glob": "^8.0.0",
-    "nyc": "^15.1.0",
-    "c8": "^7.12.0"
-  },
-  "nyc": {
-    "include": ["out/src/**/*.js"],
-    "exclude": [
-      "out/test/**/*",
-      ".vscode-test/**/*",
-      "node_modules/**/*"
-    ],
-    "reporter": ["text", "html"],
-    "all": true,
-    "check-coverage": false,
-    "sourceMap": true,
-    "instrument": true,
-    "cache": false
+    "glob": "^8.0.0"
   }
 }
