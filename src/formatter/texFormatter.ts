@@ -79,6 +79,49 @@ export class TexJapaneseFormatter {
   }
 
   /**
+   * ドキュメント全体をフォーマット（手動実行用、formatOnSaveをチェックしない）
+   * @param document - フォーマット対象のドキュメント
+   * @returns フォーマットの編集操作配列
+   */
+  formatDocumentManual(document: vscode.TextDocument): vscode.TextEdit[] {
+    try {
+      Logger.debug(`Starting manual document formatting for: ${document.fileName}`);
+
+      if (!this.config.enabled) {
+        Logger.debug("Formatting disabled in configuration");
+        return [];
+      }
+
+      if (!this.isTargetLanguage(document)) {
+        Logger.debug("Document is not a target language");
+        return [];
+      }
+
+      if (!document || document.lineCount === 0) {
+        Logger.debug("Document is empty or invalid");
+        return [];
+      }
+
+      // 大容量ファイルの判定
+      const isLargeFile = document.lineCount > 1000;
+      if (isLargeFile) {
+        Logger.info(
+          `Large file detected (${document.lineCount} lines), using optimized processing`
+        );
+        return this.formatLargeDocument(document);
+      }
+
+      return this.formatSmallDocument(document);
+    } catch (error) {
+      Logger.error(
+        "Fatal error during manual document formatting",
+        error instanceof Error ? error : new Error(String(error))
+      );
+      throw error;
+    }
+  }
+
+  /**
    * 小規模ドキュメントの通常フォーマット
    * @param document - フォーマット対象のドキュメント
    * @returns フォーマットの編集操作配列
@@ -235,6 +278,42 @@ export class TexJapaneseFormatter {
     } catch (error) {
       Logger.error(
         "Error in shouldFormat check",
+        error instanceof Error ? error : new Error(String(error))
+      );
+      return false;
+    }
+  }
+
+  /**
+   * ドキュメントが対象言語かどうかを判定（手動フォーマット用）
+   * @param document - 判定対象のドキュメント
+   * @returns 対象言語の場合true
+   */
+  isTargetLanguage(document: vscode.TextDocument): boolean {
+    try {
+      if (!this.config.enabled) {
+        Logger.debug("Formatting disabled in configuration");
+        return false;
+      }
+
+      if (!document) {
+        Logger.debug("Document is null or undefined");
+        return false;
+      }
+
+      const languageId = document.languageId;
+      const isTarget = this.config.targetLanguages.includes(languageId);
+
+      Logger.debug(
+        `Target language check - Language: ${languageId}, Target languages: ${this.config.targetLanguages.join(
+          ", "
+        )}, Result: ${isTarget}`
+      );
+
+      return isTarget;
+    } catch (error) {
+      Logger.error(
+        "Error in isTargetLanguage check",
         error instanceof Error ? error : new Error(String(error))
       );
       return false;

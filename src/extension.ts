@@ -15,14 +15,12 @@ export function activate(context: vscode.ExtensionContext) {
     // 保存前イベントの登録
     const saveListener = vscode.workspace.onWillSaveTextDocument((event) => {
       try {
-        if (event.document.languageId === "latex") {
-          const edits = formatter.formatDocument(event.document);
+        const edits = formatter.formatDocument(event.document);
 
-          if (edits.length > 0) {
-            const edit = new vscode.WorkspaceEdit();
-            edit.set(event.document.uri, edits);
-            event.waitUntil(vscode.workspace.applyEdit(edit));
-          }
+        if (edits.length > 0) {
+          const edit = new vscode.WorkspaceEdit();
+          edit.set(event.document.uri, edits);
+          event.waitUntil(vscode.workspace.applyEdit(edit));
         }
       } catch (error) {
         const errorMessage =
@@ -60,14 +58,16 @@ export function activate(context: vscode.ExtensionContext) {
             return;
           }
 
-          if (editor.document.languageId !== "latex") {
+          const document = editor.document;
+
+          if (!formatter.isTargetLanguage(document)) {
+            const targetLangs = SettingsManager.getConfiguration().targetLanguages.join(", ");
             vscode.window.showWarningMessage(
-              "Please open a LaTeX (.tex) file to use this formatter."
+              `This formatter only works with files of type: ${targetLangs}. Current file type: ${document.languageId}`
             );
             return;
           }
 
-          const document = editor.document;
           Logger.info(`Manual formatting requested for: ${document.fileName}`);
 
           // 大容量ファイルの場合は進捗表示
@@ -84,7 +84,7 @@ export function activate(context: vscode.ExtensionContext) {
                   message: "Processing large file...",
                 });
 
-                const edits = formatter.formatDocument(document);
+                const edits = formatter.formatDocumentManual(document);
 
                 if (edits.length > 0) {
                   progress.report({
@@ -112,7 +112,7 @@ export function activate(context: vscode.ExtensionContext) {
             );
           } else {
             // 小容量ファイルの場合は通常処理
-            const edits = formatter.formatDocument(document);
+            const edits = formatter.formatDocumentManual(document);
 
             if (edits.length > 0) {
               const edit = new vscode.WorkspaceEdit();
