@@ -66,7 +66,7 @@
     "pretest": "npm run compile && npm run lint",
     "lint": "eslint src --ext ts",
     "test": "npm run compile:test && node ./out/test/runTest.js",
-    "compile:test": "tsc test/runTest.ts test/suite/index.ts test/suite/textProcessor.test.ts test/suite/largeFile.test.ts --outDir out --module commonjs --target ES2020 --moduleResolution node --esModuleInterop --skipLibCheck",
+    "compile:test": "tsc test/runTest.ts test/suite/index.ts test/suite/textProcessor.test.ts test/suite/largeFile.test.ts test/suite/formatter.test.ts --outDir out --module commonjs --target ES2020 --moduleResolution node --esModuleInterop --skipLibCheck",
     "package": "vsce package",
     "publish": "vsce publish",
     "release:patch": "npm version patch && git push --follow-tags",
