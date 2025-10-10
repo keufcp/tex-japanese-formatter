@@ -61,10 +61,17 @@ export function activate(context: vscode.ExtensionContext) {
           const document = editor.document;
 
           if (!formatter.isTargetLanguage(document)) {
-            const targetLangs = formatter.getConfiguration().targetLanguages.join(", ");
-            vscode.window.showWarningMessage(
-              `This formatter only works with files of type: ${targetLangs}. Current file type: ${document.languageId}`
-            );
+            const targetLanguages = formatter.getConfiguration().targetLanguages;
+            if (targetLanguages.length === 0) {
+              vscode.window.showWarningMessage(
+                "No target languages configured. Please add languages to texJapaneseFormatter.targetLanguages setting."
+              );
+            } else {
+              const targetLangs = targetLanguages.join(", ");
+              vscode.window.showWarningMessage(
+                `This formatter only works with files of type: ${targetLangs}. Current file type: ${document.languageId}`
+              );
+            }
             return;
           }
 
