@@ -61,7 +61,7 @@ export function activate(context: vscode.ExtensionContext) {
           const document = editor.document;
 
           if (!formatter.isTargetLanguage(document)) {
-            const targetLangs = SettingsManager.getConfiguration().targetLanguages.join(", ");
+            const targetLangs = formatter.getConfiguration().targetLanguages.join(", ");
             vscode.window.showWarningMessage(
               `This formatter only works with files of type: ${targetLangs}. Current file type: ${document.languageId}`
             );

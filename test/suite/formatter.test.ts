@@ -45,8 +45,8 @@ suite("TexJapaneseFormatter Test Suite", () => {
       } as vscode.TextDocument;
 
       const result = formatter.shouldFormat(mockDocument);
-      // Result depends on the configuration, but should use targetLanguages
-      assert.strictEqual(typeof result, "boolean");
+      // With default config (formatOnSave=true, targetLanguages=["latex"]), should return true
+      assert.strictEqual(result, true);
     });
 
     test("returns false for non-target language", () => {
@@ -80,7 +80,9 @@ suite("TexJapaneseFormatter Test Suite", () => {
 
       const edits = formatter.formatDocumentManual(mockDocument);
       // Should return edits since latex is in targetLanguages by default
+      // With the default config, this should format the document
       assert.ok(Array.isArray(edits));
+      assert.ok(edits.length > 0, "Should have edits for Japanese punctuation formatting");
     });
 
     test("does not format non-target language document", () => {
@@ -121,7 +123,9 @@ suite("TexJapaneseFormatter Test Suite", () => {
 
       const edits = formatter.formatDocument(mockDocument);
       // Should return edits since latex is in targetLanguages by default
+      // With the default config (formatOnSave=true), this should format the document
       assert.ok(Array.isArray(edits));
+      assert.ok(edits.length > 0, "Should have edits for Japanese punctuation formatting");
     });
 
     test("does not format non-target language document", () => {

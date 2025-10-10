@@ -39,6 +39,14 @@ export class TexJapaneseFormatter {
   }
 
   /**
+   * 現在の設定を取得
+   * @returns 現在の設定
+   */
+  getConfiguration(): IFormatterConfig {
+    return this.config;
+  }
+
+  /**
    * ドキュメント全体をフォーマット
    * @param document - フォーマット対象のドキュメント
    * @returns フォーマットの編集操作配列
