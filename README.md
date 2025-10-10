@@ -64,6 +64,16 @@ LaTeX（\*.tex）ファイルにおいて，日本語の句読点を学術論文
 }
 ```
 
+### カスタムファイルタイプの指定
+
+LaTeX 以外のファイルタイプにもフォーマットを適用したい場合：
+
+```json
+{
+  "texJapaneseFormatter.targetLanguages": ["latex", "plaintext", "markdown"]
+}
+```
+
 ## 変換例
 
 ### 変換前
@@ -129,6 +139,10 @@ MIT License
 プルリクエストやイシューの報告を歓迎します
 
 ## 変更履歴
+
+### 1.2.0
+
+- **修正**: `targetLanguages` 設定が正しく適用されない問題を修正
 
 ### 1.1.0
 

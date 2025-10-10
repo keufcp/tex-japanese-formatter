@@ -2,7 +2,7 @@
   "name": "tex-japanese-formatter",
   "displayName": "LaTeX Japanese Punctuation Formatter",
   "description": "Format Japanese punctuation in LaTeX files on save",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "publisher": "keufcp",
   "repository": {
     "type": "git",
