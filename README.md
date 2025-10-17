@@ -9,12 +9,12 @@ LaTeX（\*.tex）ファイルにおいて，日本語の句読点を学術論文
   - 全角句点`。`→ 全角ピリオド`．`
 - **保持機能**: 半角カンマ`,`およびピリオド`.`はそのまま維持
 - **設定可能**: 拡張機能の ON/OFF 切り替えが可能
-- **対象ファイル**: `*.tex`拡張子のファイルのみが対象
+- **対象ファイル**: `*.tex`拡張子のファイルおよび指定したファイル形式が対象
 
 ## インストール
 
 1. VS Code Marketplace から「LaTeX Japanese Punctuation Formatter」をインストール
-2. または、手動でインストール：
+2. または、手動でインストール ※ `x.x.x`はバージョンに置き換えてください
    ```bash
    code --install-extension tex-japanese-formatter-x.x.x.vsix
    ```
